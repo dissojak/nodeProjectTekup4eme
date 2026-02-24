@@ -27,7 +27,9 @@ app.use(express.urlencoded({ extended: true }));
 // Cookie parsing
 app.use(cookieParser());
 
-// ====== ROUTES WILL BE ADDED HERE IN LATER STEPS ======
+// ============ ALL ROUTES WILL BE ADDED HERE  ============
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
 
 // Root route
 app.get('/', (req, res) => {
