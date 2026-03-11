@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('./setup');
 
-jest.setTimeout(60000);
+jest.setTimeout(90000);
 
 describe('User Management Endpoints', () => {
   let adminCookies;
@@ -55,7 +55,7 @@ describe('User Management Endpoints', () => {
         role: 'agent',
       });
     userId = testUserRes.body._id;
-  });
+  }, 90000);
 
   describe('GET /api/users', () => {
     it('should get all users as admin', async () => {

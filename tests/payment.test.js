@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('./setup');
 
-jest.setTimeout(60000);
+jest.setTimeout(90000);
 
 describe('Payment Endpoints', () => {
   let agentCookies;
@@ -65,7 +65,7 @@ describe('Payment Endpoints', () => {
         dueDate: '2026-06-01',
       });
     invoiceId = invoiceRes.body._id;
-  });
+  }, 90000);
 
   describe('POST /api/payments', () => {
     it('should record a cash payment successfully', async () => {

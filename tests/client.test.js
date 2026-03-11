@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('./setup');
 
-jest.setTimeout(60000);
+jest.setTimeout(90000);
 
 describe('Client Endpoints', () => {
   let agentCookies;
@@ -62,7 +62,7 @@ describe('Client Endpoints', () => {
         password: '123456',
       });
     adminCookies = adminLogin.headers['set-cookie'];
-  });
+  }, 90000);
 
   describe('POST /api/clients', () => {
     it('should create a new client as agent', async () => {

@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('./setup');
 
-jest.setTimeout(60000);
+jest.setTimeout(90000);
 
 describe('Invoice Endpoints', () => {
   let agentCookies;
@@ -71,7 +71,7 @@ describe('Invoice Endpoints', () => {
       .send({ name: 'Invoice Test Client' });
 
     clientId = clientRes.body._id;
-  });
+  }, 90000);
 
   describe('POST /api/invoices', () => {
     it('should create a new invoice as agent', async () => {

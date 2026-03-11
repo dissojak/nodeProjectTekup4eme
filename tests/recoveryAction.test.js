@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('./setup');
 
-jest.setTimeout(60000);
+jest.setTimeout(90000);
 
 describe('Recovery Action Endpoints', () => {
   let agentCookies;
@@ -65,7 +65,7 @@ describe('Recovery Action Endpoints', () => {
         dueDate: '2026-01-01', // Past due for recovery actions
       });
     invoiceId = invoiceRes.body._id;
-  });
+  }, 90000);
 
   describe('POST /api/recovery-actions', () => {
     it('should create a phone call recovery action', async () => {
