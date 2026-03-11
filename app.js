@@ -34,6 +34,8 @@ app.use('/api/clients', clientRoutes);
 const invoiceRoutes = require('./routes/invoices');
 app.use('/api/invoices', invoiceRoutes);
 
+const paymentRoutes = require('./routes/payments');
+app.use('/api/payments', paymentRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Recouvra+ API' });
