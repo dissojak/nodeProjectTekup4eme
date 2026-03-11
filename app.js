@@ -3,6 +3,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 
 const app = express();
 
@@ -27,6 +29,9 @@ app.use(cookieParser());
 
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const clientRoutes = require('./routes/clients');
 app.use('/api/clients', clientRoutes);
