@@ -5,7 +5,7 @@ const options = {
     openapi: '3.0.0',
     info: {
       title: 'Recouvra+ API',
-      version: '1.0.0',
+      version: '1.0.2',
       description: 'API de gestion du recouvrement - Debt Collection Management API',
       contact: {
         name: 'Adem & Baha',
