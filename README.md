@@ -159,3 +159,31 @@ Le serveur démarre sur `http://localhost:5500`.
 | Supprimer clients | ❌ | ✅ | ✅ |
 | Voir statistiques | ❌ | ✅ | ✅ |
 | Gérer utilisateurs | ❌ | ❌ | ✅ |
+
+## Tests
+
+```bash
+npm test
+```
+
+Les tests couvrent :
+- Authentification (register, login, logout, profil)
+- Gestion des clients (CRUD + validation)
+- Gestion des factures (CRUD + statuts)
+- Paiements avec stratégies
+- Actions de recouvrement (5 types)
+- Gestion des utilisateurs (admin-only)
+- Statistiques (manager-only)
+
+> Créer un fichier `.env.test` pour les tests
+
+## Documentation Swagger
+
+Accessible à : `http://localhost:5500/api-docs`
+
+Tous les endpoints sont documentés avec exemples et schémas.
+
+## Équipe
+
+- **Adem** — Setup, Models, Auth, Client CRUD, Payment (Strategy), Swagger, Tests, README
+- **Baha** — Error Middleware, Invoice, Recovery Actions, User Management, Stats
