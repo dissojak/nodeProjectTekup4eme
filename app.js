@@ -22,6 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
+// Root route
+//================================================
+
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
@@ -31,7 +34,7 @@ app.use('/api/clients', clientRoutes);
 const invoiceRoutes = require('./routes/invoices');
 app.use('/api/invoices', invoiceRoutes);
 
-// Root route
+
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Recouvra+ API' });
 });
