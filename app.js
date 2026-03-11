@@ -31,6 +31,9 @@ app.use(cookieParser());
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
+const clientRoutes = require('./routes/clients');
+app.use('/api/clients', clientRoutes);
+
 // Root route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Recouvra+ API' });
