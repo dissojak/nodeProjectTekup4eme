@@ -87,3 +87,12 @@ Le serveur démarre sur `http://localhost:5500`.
 - GET `/api/stats/overview` — Vue d'ensemble
 - GET `/api/stats/invoices` — Statistiques factures
 - GET `/api/stats/agents` — Performance agents
+
+## Design Patterns
+
+- **MVC** — Séparation models/controllers/routes
+- **Singleton** — Connexion unique à MongoDB (`config/db.js`)
+- **Chain of Responsibility** — Chaîne de middlewares (auth → validate → controller → error)
+- **Decorator** — `asyncHandler` pour gestion des erreurs async
+- **Factory** — Création d'erreurs HTTP personnalisées (`utils/HttpError.js`)
+- **Strategy** — Traitement par méthode de paiement (cash/check/transfer)
