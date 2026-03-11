@@ -174,6 +174,15 @@ Le serveur démarre sur `http://localhost:5500`.
 | Voir statistiques | ❌ | ✅ | ✅ |
 | Gérer utilisateurs | ❌ | ❌ | ✅ |
 
+## Authentification
+
+1. L'utilisateur se registre ou se connecte
+2. JWT généré et stocké en cookie httpOnly
+3. Middleware `authMiddleware` protège les routes protégées
+4. Middleware `authorize()` vérifie le rôle
+5. Controller exécute l'action
+6. Erreurs capturées par `globalErrorHandler`
+
 ## Tests
 
 ```bash
@@ -196,6 +205,25 @@ Les tests couvrent :
 Accessible à : `http://localhost:5500/api-docs`
 
 Tous les endpoints sont documentés avec exemples et schémas.
+
+## Commandes utiles
+
+```bash
+# Démarrer le serveur en développement
+npm run dev
+
+# Lancer les tests
+npm test
+
+# Lancer les tests en mode watch
+npm test -- --watch
+
+# Lancer seulement les tests auth
+npm test -- auth.test.js
+
+# Build pour production
+npm run build
+```
 
 ## Équipe
 
