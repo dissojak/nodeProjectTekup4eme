@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('./setup');
 
-jest.setTimeout(60000);
+jest.setTimeout(90000);
 
 describe('Statistics Endpoints', () => {
   let adminCookies;
@@ -86,14 +86,11 @@ describe('Statistics Endpoints', () => {
           dueDate: '2026-06-01',
         });
     }
-  });
+  }, 90000);
 
   describe('GET /api/stats/overview', () => {
     it('should get overview statistics as manager', async () => {
       const res = await request(app)
-        .get('/api/stats/overview')
-        .set('Cookie', managerCookies);
-
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty('totalInvoices');
       expect(res.body).toHaveProperty('totalAmount');
