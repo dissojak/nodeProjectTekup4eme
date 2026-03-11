@@ -6,33 +6,30 @@ const morgan = require('morgan');
 
 const app = express();
 
-// Security middleware
 app.use(helmet());
 
-// CORS
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
 }));
 
-// Logging (dev only)
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Cookie parsing
 app.use(cookieParser());
 
-// ============ ALL ROUTES WILL BE ADDED HERE  ============
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
 const clientRoutes = require('./routes/clients');
 app.use('/api/clients', clientRoutes);
+
+const invoiceRoutes = require('./routes/invoices');
+app.use('/api/invoices', invoiceRoutes);
 
 // Root route
 app.get('/', (req, res) => {
