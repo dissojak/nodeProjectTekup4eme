@@ -29,6 +29,8 @@ app.use('/api/invoices', invoiceRoutes);
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Recouvra+ API' });
 });
+const recoveryActionRoutes = require('./routes/recoveryActions');
+app.use('/api/recovery-actions', recoveryActionRoutes);
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 app.use(notFound);
 app.use(errorHandler);
