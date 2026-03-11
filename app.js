@@ -35,5 +35,7 @@ app.use('/api/auth', authRoutes);
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Recouvra+ API' });
 });
-
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+app.use(notFound);
+app.use(errorHandler);
 module.exports = app;
