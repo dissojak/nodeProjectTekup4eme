@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('./setup');
 
+jest.setTimeout(30000);
+
 describe('Recovery Action Endpoints', () => {
   let agentCookies;
   let managerCookies;

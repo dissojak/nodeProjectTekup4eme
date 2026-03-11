@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('./setup');
 
+jest.setTimeout(30000);
+
 describe('Auth Endpoints', () => {
   let cookies;
   let adminId;

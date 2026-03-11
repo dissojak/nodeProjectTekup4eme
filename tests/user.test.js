@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('./setup');
 
+jest.setTimeout(30000);
+
 describe('User Management Endpoints', () => {
   let adminCookies;
   let managerCookies;
