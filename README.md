@@ -96,3 +96,66 @@ Le serveur démarre sur `http://localhost:5500`.
 - **Decorator** — `asyncHandler` pour gestion des erreurs async
 - **Factory** — Création d'erreurs HTTP personnalisées (`utils/HttpError.js`)
 - **Strategy** — Traitement par méthode de paiement (cash/check/transfer)
+
+## Structure du projet
+
+```
+├── config/
+│   ├── db.js
+│   └── swagger.js
+├── controllers/
+│   ├── authController.js
+│   ├── userController.js
+│   ├── clientController.js
+│   ├── invoiceController.js
+│   ├── paymentController.js
+│   ├── recoveryActionController.js
+│   └── statsController.js
+├── middleware/
+│   ├── authMiddleware.js
+│   ├── errorMiddleware.js
+│   └── validateMiddleware.js
+├── models/
+│   ├── User.js
+│   ├── Client.js
+│   ├── Invoice.js
+│   ├── Payment.js
+│   └── RecoveryAction.js
+├── routes/
+│   ├── auth.js
+│   ├── users.js
+│   ├── clients.js
+│   ├── invoices.js
+│   ├── payments.js
+│   ├── recoveryActions.js
+│   └── stats.js
+├── strategies/
+│   └── paymentStrategies.js
+├── validators/
+│   └── *.js
+├── utils/
+│   ├── generateToken.js
+│   └── HttpError.js
+├── tests/
+│   ├── auth.test.js
+│   ├── client.test.js
+│   ├── invoice.test.js
+│   ├── payment.test.js
+│   ├── recoveryAction.test.js
+│   ├── user.test.js
+│   └── stats.test.js
+├── app.js
+├── server.js
+├── .env
+└── package.json
+```
+
+## Rôles et Permissions
+
+| Action | Agent | Manager | Admin |
+|--------|:-----:|:-------:|:-----:|
+| Voir clients/factures | ✅ | ✅ | ✅ |
+| Créer/modifier clients | ✅ | ✅ | ❌ |
+| Supprimer clients | ❌ | ✅ | ✅ |
+| Voir statistiques | ❌ | ✅ | ✅ |
+| Gérer utilisateurs | ❌ | ❌ | ✅ |
