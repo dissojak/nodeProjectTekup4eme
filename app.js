@@ -44,6 +44,8 @@ const recoveryActionRoutes = require('./routes/recoveryActions');
 app.use('/api/recovery-actions', recoveryActionRoutes);
 const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
+const statsRoutes = require('./routes/stats');
+app.use('/api/stats', statsRoutes);
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 app.use(notFound);
 app.use(errorHandler);
