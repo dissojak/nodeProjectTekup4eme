@@ -2,6 +2,18 @@
 
 API REST pour gérer les clients, factures impayées et actions de recouvrement.
 
+## Technologies
+
+- **Node.js** 22
+- **Express.js** v5.2.1 — Framework web
+- **MongoDB** + **Mongoose** — Base de données
+- **JWT** (jsonwebtoken) — Authentification
+- **express-validator** — Validation
+- **Swagger** — Documentation API
+- **Jest** + **Supertest** — Tests unitaires
+- **bcryptjs** — Hashage des mots de passe
+- **Helmet** — Sécurité HTTP
+
 ## Installation
 
 ```bash
@@ -33,3 +45,45 @@ npm start
 ```
 
 Le serveur démarre sur `http://localhost:5500`.
+
+## API Endpoints
+
+### Authentification (`/api/auth`)
+- POST `/api/auth/register` — Inscription
+- POST `/api/auth/login` — Connexion
+- POST `/api/auth/logout` — Déconnexion
+- GET `/api/auth/me` — Profil courant
+
+### Clients (`/api/clients`)
+- GET `/api/clients` — Liste des clients
+- GET `/api/clients/:id` — Détail client
+- POST `/api/clients` — Créer un client
+- PUT `/api/clients/:id` — Modifier client
+- DELETE `/api/clients/:id` — Supprimer client
+
+### Factures (`/api/invoices`)
+- GET `/api/invoices` — Liste des factures
+- GET `/api/invoices/:id` — Détail facture
+- POST `/api/invoices` — Créer une facture
+- PUT `/api/invoices/:id` — Modifier facture
+- DELETE `/api/invoices/:id` — Supprimer facture
+
+### Paiements (`/api/payments`)
+- GET `/api/payments` — Liste des paiements
+- POST `/api/payments` — Enregistrer un paiement
+
+### Actions de Recouvrement (`/api/recovery-actions`)
+- GET `/api/recovery-actions` — Liste des actions
+- POST `/api/recovery-actions` — Créer une action
+- PUT `/api/recovery-actions/:id` — Modifier action
+- DELETE `/api/recovery-actions/:id` — Supprimer action
+
+### Utilisateurs (`/api/users`)
+- GET `/api/users` — Liste des utilisateurs (Admin)
+- PUT `/api/users/:id` — Modifier utilisateur (Admin)
+- DELETE `/api/users/:id` — Supprimer utilisateur (Admin)
+
+### Statistiques (`/api/stats`)
+- GET `/api/stats/overview` — Vue d'ensemble
+- GET `/api/stats/invoices` — Statistiques factures
+- GET `/api/stats/agents` — Performance agents
