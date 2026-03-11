@@ -2,6 +2,17 @@
 
 API REST pour gérer les clients, factures impayées et actions de recouvrement.
 
+## 🚀 Démarrage rapide
+
+```bash
+git clone <repository-url>
+cd nodeProjectTekup4eme
+npm install
+npm run dev
+```
+
+Accédez à `http://localhost:5500/api-docs` pour la documentation Swagger.
+
 ## Technologies
 
 - **Node.js** 22
@@ -17,8 +28,6 @@ API REST pour gérer les clients, factures impayées et actions de recouvrement.
 ## Installation
 
 ```bash
-git clone <repository-url>
-cd nodeProjectTekup4eme
 npm install
 ```
 
@@ -48,45 +57,50 @@ Le serveur démarre sur `http://localhost:5500`.
 
 ## API Endpoints
 
-### Authentification (`/api/auth`)
-- POST `/api/auth/register` — Inscription
-- POST `/api/auth/login` — Connexion
-- POST `/api/auth/logout` — Déconnexion
-- GET `/api/auth/me` — Profil courant
+### Auth
+- `POST /api/auth/register` — S'inscrire
+- `POST /api/auth/login` — Se connecter
+- `POST /api/auth/logout` — Se déconnecter
+- `GET /api/auth/me` — Profil utilisateur
 
-### Clients (`/api/clients`)
-- GET `/api/clients` — Liste des clients
-- GET `/api/clients/:id` — Détail client
-- POST `/api/clients` — Créer un client
-- PUT `/api/clients/:id` — Modifier client
-- DELETE `/api/clients/:id` — Supprimer client
+### Clients
+- `GET /api/clients` — Liste
+- `GET /api/clients/:id` — Détail
+- `POST /api/clients` — Créer (Agent, Manager)
+- `PUT /api/clients/:id` — Modifier (Agent, Manager)
+- `DELETE /api/clients/:id` — Supprimer (Manager, Admin)
 
-### Factures (`/api/invoices`)
-- GET `/api/invoices` — Liste des factures
-- GET `/api/invoices/:id` — Détail facture
-- POST `/api/invoices` — Créer une facture
-- PUT `/api/invoices/:id` — Modifier facture
-- DELETE `/api/invoices/:id` — Supprimer facture
+### Factures
+- `GET /api/invoices` — Liste
+- `GET /api/invoices/:id` — Détail
+- `GET /api/invoices/client/:clientId` — Par client
+- `POST /api/invoices` — Créer (Agent, Manager)
+- `PUT /api/invoices/:id` — Modifier (Agent, Manager)
+- `DELETE /api/invoices/:id` — Supprimer (Manager, Admin)
 
-### Paiements (`/api/payments`)
-- GET `/api/payments` — Liste des paiements
-- POST `/api/payments` — Enregistrer un paiement
+### Paiements
+- `GET /api/payments` — Liste
+- `GET /api/payments/invoice/:invoiceId` — Par facture
+- `POST /api/payments` — Enregistrer (Agent, Manager)
 
-### Actions de Recouvrement (`/api/recovery-actions`)
-- GET `/api/recovery-actions` — Liste des actions
-- POST `/api/recovery-actions` — Créer une action
-- PUT `/api/recovery-actions/:id` — Modifier action
-- DELETE `/api/recovery-actions/:id` — Supprimer action
+### Recovery Actions
+- `GET /api/recovery-actions` — Liste
+- `GET /api/recovery-actions/client/:clientId` — Par client
+- `GET /api/recovery-actions/invoice/:invoiceId` — Par facture
+- `POST /api/recovery-actions` — Créer (Agent, Manager)
+- `PUT /api/recovery-actions/:id` — Modifier (Agent, Manager)
+- `DELETE /api/recovery-actions/:id` — Supprimer (Manager, Admin)
 
-### Utilisateurs (`/api/users`)
-- GET `/api/users` — Liste des utilisateurs (Admin)
-- PUT `/api/users/:id` — Modifier utilisateur (Admin)
-- DELETE `/api/users/:id` — Supprimer utilisateur (Admin)
+### Utilisateurs
+- `GET /api/users` — Liste (Admin)
+- `GET /api/users/:id` — Détail (Admin, Manager)
+- `PUT /api/users/:id` — Modifier (Admin)
+- `DELETE /api/users/:id` — Supprimer (Admin)
 
-### Statistiques (`/api/stats`)
-- GET `/api/stats/overview` — Vue d'ensemble
-- GET `/api/stats/invoices` — Statistiques factures
-- GET `/api/stats/agents` — Performance agents
+### Statistiques
+- `GET /api/stats/overview` — Résumé global (Manager, Admin)
+- `GET /api/stats/invoices` — Data factures (Manager, Admin)
+- `GET /api/stats/agents` — Performance agents (Manager, Admin)
 
 ## Design Patterns
 
