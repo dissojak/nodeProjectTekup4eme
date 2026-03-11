@@ -3,24 +3,39 @@ const app = require('./setup');
 
 describe('Auth Endpoints', () => {
   let cookies;
+  let adminId;
 
   describe('POST /api/auth/register', () => {
-    it('should register a new user', async () => {
+    it('should register a new user with default agent role', async () => {
       const res = await request(app)
         .post('/api/auth/register')
         .send({
           name: 'Test User',
           email: 'testuser@test.com',
           password: '123456',
-          role: 'admin',
         });
 
       expect(res.statusCode).toBe(201);
       expect(res.body).toHaveProperty('_id');
       expect(res.body.name).toBe('Test User');
       expect(res.body.email).toBe('testuser@test.com');
-      expect(res.body.role).toBe('admin');
+      expect(res.body.role).toBe('agent');
       expect(res.body).not.toHaveProperty('password');
+    });
+
+    it('should register user with specific role', async () => {
+      const res = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Admin User',
+          email: 'admin@test.com',
+          password: '123456',
+          role: 'admin',
+        });
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body.role).toBe('admin');
+      adminId = res.body._id;
     });
 
     it('should not register with duplicate email', async () => {
@@ -50,6 +65,43 @@ describe('Auth Endpoints', () => {
           name: 'Short Pass',
           email: 'short@test.com',
           password: '123',
+        });
+
+      expect(res.statusCode).toBe(400);
+    });
+
+    it('should not register with invalid name length', async () => {
+      const res = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'A', // Less than 3 characters
+          email: 'short@test.com',
+          password: '123456',
+        });
+
+      expect(res.statusCode).toBe(400);
+    });
+
+    it('should validate role enum', async () => {
+      const res = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Invalid Role User',
+          email: 'invalidrole@test.com',
+          password: '123456',
+          role: 'superuser',
+        });
+
+      expect(res.statusCode).toBe(400);
+    });
+
+    it('should validate email format', async () => {
+      const res = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Invalid Email',
+          email: 'not-an-email',
+          password: '123456',
         });
 
       expect(res.statusCode).toBe(400);
