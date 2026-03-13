@@ -13,7 +13,7 @@ const register = asyncHandler(async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   // Check if user already exists
   let user = await User.findOne({ email });
@@ -22,8 +22,8 @@ const register = asyncHandler(async (req, res) => {
     throw new HttpError('Email already in use', 400);
   }
 
-  // Create new user
-  user = new User({ name, email, password });
+  // Create new user with optional role
+  user = new User({ name, email, password, ...(role && { role }) });
   await user.save();
 
   generateToken(res, user._id);

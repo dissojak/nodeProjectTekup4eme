@@ -9,7 +9,8 @@ const errorHandler = (err, req, res, next) => {
     return next(err);
   }
 
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  // Check if error has a code property (HttpError), otherwise use response status
+  let statusCode = err.code || (res.statusCode === 200 ? 500 : res.statusCode);
   let message = err.message;
 
   if (err.name === 'CastError' && err.kind === 'ObjectId') {
@@ -17,7 +18,8 @@ const errorHandler = (err, req, res, next) => {
     message = 'Resource not found';
   }
 
-  if (err.code === 11000) {
+  // Skip 11000 duplicate check if error code is already set by HttpError
+  if (!err.code && err.code === 11000) {
     statusCode = 400;
     const field = Object.keys(err.keyValue).join(', ');
     message = `Duplicate value for field: ${field}`;
