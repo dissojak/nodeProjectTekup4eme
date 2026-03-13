@@ -1,12 +1,6 @@
 /**
- * PayPalPaymentGateway - PayPal payment processing implementation
- * Template showing how to add new payment gateways without modifying existing code
- * Demonstrates Open/Closed Principle: Open for extension, closed for modification
- * 
- * To use this in production:
- * 1. npm install @paypal/checkout-server-sdk
- * 2. Set PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET in .env
- * 3. Implement the actual PayPal API calls
+ * PayPal payment gateway - Template for production integration
+ * Demonstrates how to add new gateways without modifying existing code
  */
 
 const BasePaymentGateway = require('./BasePaymentGateway');
@@ -19,10 +13,6 @@ class PayPalPaymentGateway extends BasePaymentGateway {
     this.demoMode = !this.isConfigured();
   }
 
-  /**
-   * Process payment via PayPal
-   * In production, creates a PayPal Order and returns approval URL
-   */
   async processPayment(paymentData) {
     const { amount, currency = 'USD', customerEmail, description, invoiceId } = paymentData;
 
@@ -43,30 +33,7 @@ class PayPalPaymentGateway extends BasePaymentGateway {
         return this.processDemoPayment(amount, currency, customerEmail, invoiceId);
       }
 
-      // Production code (requires @paypal/checkout-server-sdk)
-      // const client = new paypal.core.PayPalHttpClient(environment);
-      // const createOrderRequest = new paypal.orders.OrdersCreateRequest();
-      // createOrderRequest.prefer('return=representation');
-      // createOrderRequest.requestBody({
-      //   intent: 'CAPTURE',
-      //   purchase_units: [
-      //     {
-      //       amount: {
-      //         currency_code: currency,
-      //         value: amount.toString(),
-      //       },
-      //     },
-      //   ],
-      //   payer: {
-      //     email_address: customerEmail,
-      //   },
-      // });
-      //
-      // const order = await client.execute(createOrderRequest);
-      // return this.formatResponse(order.result.status === 'CREATED', order.result.id, 'PayPal order created', {
-      //   approvalLink: order.result.links.find(link => link.rel === 'approve').href,
-      //   invoiceId,
-      // });
+      // Production: requires @paypal/checkout-server-sdk
     } catch (error) {
       return this.formatResponse(false, null, 'Payment processing failed', {
         error: error.message,
@@ -74,10 +41,6 @@ class PayPalPaymentGateway extends BasePaymentGateway {
     }
   }
 
-  /**
-   * Demo payment processing (simulates PayPal)
-   * @private
-   */
   processDemoPayment(amount, currency, customerEmail, invoiceId) {
     const transactionId = `paypal_demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const approvalLink = `https://sandbox.paypal.com/checkoutnow?token=${transactionId}`;
@@ -91,14 +54,10 @@ class PayPalPaymentGateway extends BasePaymentGateway {
         status: 'CREATED',
         approvalLink,
         demo: true,
-        note: 'This is a demo transaction. In production, connect to real PayPal API.',
       })
     );
   }
 
-  /**
-   * Verify payment status
-   */
   async verifyPayment(transactionId) {
     if (!transactionId) {
       return this.formatResponse(false, null, 'Transaction ID required', {
@@ -115,16 +74,7 @@ class PayPalPaymentGateway extends BasePaymentGateway {
         });
       }
 
-      // Production code:
-      // const client = new paypal.core.PayPalHttpClient(environment);
-      // const getOrderRequest = new paypal.orders.OrdersGetRequest(transactionId);
-      // const order = await client.execute(getOrderRequest);
-      // return this.formatResponse(
-      //   order.result.status === 'COMPLETED',
-      //   transactionId,
-      //   `Order status: ${order.result.status}`,
-      //   { status: order.result.status }
-      // );
+      // Production code
     } catch (error) {
       return this.formatResponse(false, transactionId, 'Verification failed', {
         error: error.message,
@@ -133,9 +83,6 @@ class PayPalPaymentGateway extends BasePaymentGateway {
     }
   }
 
-  /**
-   * Refund a payment
-   */
   async refundPayment(transactionId, amount = null) {
     if (!transactionId) {
       return this.formatResponse(false, null, 'Transaction ID required', {
@@ -154,8 +101,7 @@ class PayPalPaymentGateway extends BasePaymentGateway {
         });
       }
 
-      // Production code:
-      // Create refund via PayPal API
+      // Production code
     } catch (error) {
       return this.formatResponse(false, null, 'Refund failed', {
         error: error.message,
@@ -164,9 +110,6 @@ class PayPalPaymentGateway extends BasePaymentGateway {
     }
   }
 
-  /**
-   * Get transaction details
-   */
   async getTransactionDetails(transactionId) {
     if (!transactionId) {
       return this.formatResponse(false, null, 'Transaction ID required');
@@ -188,8 +131,7 @@ class PayPalPaymentGateway extends BasePaymentGateway {
         );
       }
 
-      // Production code:
-      // Retrieve order details from PayPal API
+      // Production code
     } catch (error) {
       return this.formatResponse(false, transactionId, 'Failed to retrieve details', {
         error: error.message,
