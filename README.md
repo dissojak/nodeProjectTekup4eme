@@ -119,12 +119,7 @@ Le serveur démarre sur `http://localhost:5500`.
 │   └── swagger.js
 ├── controllers/
 │   ├── authController.js
-│   ├── userController.js
-│   ├── clientController.js
-│   ├── invoiceController.js
-│   ├── paymentController.js
-│   ├── recoveryActionController.js
-│   └── statsController.js
+│   ├── ...
 ├── middleware/
 │   ├── authMiddleware.js
 │   ├── errorMiddleware.js
@@ -137,12 +132,7 @@ Le serveur démarre sur `http://localhost:5500`.
 │   └── RecoveryAction.js
 ├── routes/
 │   ├── auth.js
-│   ├── users.js
-│   ├── clients.js
-│   ├── invoices.js
-│   ├── payments.js
-│   ├── recoveryActions.js
-│   └── stats.js
+│   ├── ...
 ├── strategies/
 │   └── paymentStrategies.js
 ├── validators/
@@ -152,12 +142,7 @@ Le serveur démarre sur `http://localhost:5500`.
 │   └── HttpError.js
 ├── tests/
 │   ├── auth.test.js
-│   ├── client.test.js
-│   ├── invoice.test.js
-│   ├── payment.test.js
-│   ├── recoveryAction.test.js
-│   ├── user.test.js
-│   └── stats.test.js
+│   ├── ...
 ├── app.js
 ├── server.js
 ├── .env
@@ -227,5 +212,5 @@ npm run build
 
 ## Équipe
 
-- **Adem** — Setup, Models, Auth, Client CRUD, Payment (Strategy), Swagger, Tests, README
-- **Baha** — Error Middleware, Invoice, Recovery Actions, User Management, Stats
+- **Adem** — Setup, Models, Auth, Client CRUD, Payment (Strategy), Swagger, README
+- **Baha** — Error Middleware, Invoice, Recovery Actions, User Management, Stats, Tests

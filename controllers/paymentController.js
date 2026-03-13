@@ -6,7 +6,7 @@ const { getPaymentStrategy } = require('../strategies/paymentStrategies');
 
 // @desc    Get all payments
 // @route   GET /api/payments
-// @access  Private
+// @access  Private (all roles)
 const getPayments = asyncHandler(async (req, res) => {
   const payments = await Payment.find()
     .populate('invoice', 'invoiceNumber amount status')
@@ -17,7 +17,7 @@ const getPayments = asyncHandler(async (req, res) => {
 
 // @desc    Get payments by invoice ID
 // @route   GET /api/payments/invoice/:invoiceId
-// @access  Private
+// @access  Private (all roles)
 const getPaymentsByInvoice = asyncHandler(async (req, res) => {
   const invoice = await Invoice.findById(req.params.invoiceId);
 
@@ -35,7 +35,7 @@ const getPaymentsByInvoice = asyncHandler(async (req, res) => {
 
 // @desc    Record a new payment
 // @route   POST /api/payments
-// @access  Private
+// @access  Private (agent, manager)
 const createPayment = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
