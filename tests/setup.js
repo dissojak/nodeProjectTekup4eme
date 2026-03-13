@@ -26,7 +26,7 @@ beforeAll(async () => {
       }
     }
   } catch (err) {
-    console.error('❌ MongoDB connection failed:', err.message);
+    console.error('MongoDB connection failed:', err.message);
     console.error('Make sure:');
     console.error('1. MongoDB URI is correct in .env.test');
     console.error('2. Your IP address is whitelisted in MongoDB Atlas');

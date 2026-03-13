@@ -1,10 +1,10 @@
-// Strategy pattern — each payment method has its own processing logic
+// Strategy pattern - each payment method has its own processing logic
 // In a real app, these could connect to different external services
 
 const paymentStrategies = {
   cash: {
     process: (paymentData) => {
-      // Cash payment — immediate processing
+      // Cash payment - immediate processing
       return {
         ...paymentData,
         processedAt: new Date(),
@@ -15,7 +15,7 @@ const paymentStrategies = {
 
   check: {
     process: (paymentData) => {
-      // Check payment — may need clearing time
+      // Check payment - may need clearing time
       return {
         ...paymentData,
         processedAt: new Date(),
@@ -29,7 +29,7 @@ const paymentStrategies = {
 
   transfer: {
     process: (paymentData) => {
-      // Bank transfer — reference number tracking
+      // Bank transfer - reference number tracking
       return {
         ...paymentData,
         processedAt: new Date(),
