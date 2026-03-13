@@ -102,11 +102,11 @@ const getInvoiceStats = asyncHandler(async (req, res) => {
     invoicesPerMonth,
     paymentMethodStats,
   });
+});
+
 // @desc    Get agent performance statistics
 // @route   GET /api/stats/agents
-// @access  Private});
-
-
+// @access  Private
 const getAgentStats = asyncHandler(async (req, res) => {
   const actionsByAgent = await RecoveryAction.aggregate([
     {
