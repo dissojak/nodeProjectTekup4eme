@@ -1,8 +1,8 @@
-# Recouvra+ — API de Gestion du Recouvrement
+# Recouvra+ — Debt Recovery Management API
 
-API REST pour gérer les clients, factures impayées et actions de recouvrement.
+REST API for managing clients, unpaid invoices and recovery actions.
 
-## 🚀 Démarrage rapide
+## 🚀 Quick Start
 
 ```bash
 git clone <repository-url>
@@ -11,19 +11,19 @@ npm install
 npm run dev
 ```
 
-Accédez à `http://localhost:5500/api-docs` pour la documentation Swagger.
+Access `http://localhost:5500/api-docs` for Swagger documentation.
 
 ## Technologies
 
 - **Node.js** 22
-- **Express.js** v5.2.1 — Framework web
-- **MongoDB** + **Mongoose** — Base de données
-- **JWT** (jsonwebtoken) — Authentification
+- **Express.js** v5.2.1 — Web framework
+- **MongoDB** + **Mongoose** — Database
+- **JWT** (jsonwebtoken) — Authentication
 - **express-validator** — Validation
-- **Swagger** — Documentation API
-- **Jest** + **Supertest** — Tests unitaires
-- **bcryptjs** — Hashage des mots de passe
-- **Helmet** — Sécurité HTTP
+- **Swagger** — API Documentation
+- **Jest** + **Supertest** — Unit tests
+- **bcryptjs** — Password hashing
+- **Helmet** — HTTP Security
 
 ## Installation
 
@@ -33,7 +33,7 @@ npm install
 
 ## Configuration
 
-Créer un fichier `.env` à la racine :
+Create a `.env` file at the root:
 
 ```env
 PORT=5500
@@ -43,75 +43,75 @@ JWT_EXPIRE=30d
 NODE_ENV=development
 ```
 
-## Lancement
+## Running
 
 ```bash
-# Mode développement
+# Development mode
 npm run dev
 
-# Mode production
+# Production mode
 npm start
 ```
 
-Le serveur démarre sur `http://localhost:5500`.
+The server starts on `http://localhost:5500`.
 
 ## API Endpoints
 
 ### Auth
-- `POST /api/auth/register` — S'inscrire
-- `POST /api/auth/login` — Se connecter
-- `POST /api/auth/logout` — Se déconnecter
-- `GET /api/auth/me` — Profil utilisateur
+- `POST /api/auth/register` — Register
+- `POST /api/auth/login` — Login
+- `POST /api/auth/logout` — Logout
+- `GET /api/auth/me` — User profile
 
 ### Clients
-- `GET /api/clients` — Liste
-- `GET /api/clients/:id` — Détail
-- `POST /api/clients` — Créer (Agent, Manager)
-- `PUT /api/clients/:id` — Modifier (Agent, Manager)
-- `DELETE /api/clients/:id` — Supprimer (Manager, Admin)
+- `GET /api/clients` — List
+- `GET /api/clients/:id` — Detail
+- `POST /api/clients` — Create (Agent, Manager)
+- `PUT /api/clients/:id` — Update (Agent, Manager)
+- `DELETE /api/clients/:id` — Delete (Manager, Admin)
 
-### Factures
-- `GET /api/invoices` — Liste
-- `GET /api/invoices/:id` — Détail
-- `GET /api/invoices/client/:clientId` — Par client
-- `POST /api/invoices` — Créer (Agent, Manager)
-- `PUT /api/invoices/:id` — Modifier (Agent, Manager)
-- `DELETE /api/invoices/:id` — Supprimer (Manager, Admin)
+### Invoices
+- `GET /api/invoices` — List
+- `GET /api/invoices/:id` — Detail
+- `GET /api/invoices/client/:clientId` — By client
+- `POST /api/invoices` — Create (Agent, Manager)
+- `PUT /api/invoices/:id` — Update (Agent, Manager)
+- `DELETE /api/invoices/:id` — Delete (Manager, Admin)
 
-### Paiements
-- `GET /api/payments` — Liste
-- `GET /api/payments/invoice/:invoiceId` — Par facture
-- `POST /api/payments` — Enregistrer (Agent, Manager)
+### Payments
+- `GET /api/payments` — List
+- `GET /api/payments/invoice/:invoiceId` — By invoice
+- `POST /api/payments` — Record (Agent, Manager)
 
 ### Recovery Actions
-- `GET /api/recovery-actions` — Liste
-- `GET /api/recovery-actions/client/:clientId` — Par client
-- `GET /api/recovery-actions/invoice/:invoiceId` — Par facture
-- `POST /api/recovery-actions` — Créer (Agent, Manager)
-- `PUT /api/recovery-actions/:id` — Modifier (Agent, Manager)
-- `DELETE /api/recovery-actions/:id` — Supprimer (Manager, Admin)
+- `GET /api/recovery-actions` — List
+- `GET /api/recovery-actions/client/:clientId` — By client
+- `GET /api/recovery-actions/invoice/:invoiceId` — By invoice
+- `POST /api/recovery-actions` — Create (Agent, Manager)
+- `PUT /api/recovery-actions/:id` — Update (Agent, Manager)
+- `DELETE /api/recovery-actions/:id` — Delete (Manager, Admin)
 
-### Utilisateurs
-- `GET /api/users` — Liste (Admin)
-- `GET /api/users/:id` — Détail (Admin, Manager)
-- `PUT /api/users/:id` — Modifier (Admin)
-- `DELETE /api/users/:id` — Supprimer (Admin)
+### Users
+- `GET /api/users` — List (Admin)
+- `GET /api/users/:id` — Detail (Admin, Manager)
+- `PUT /api/users/:id` — Update (Admin)
+- `DELETE /api/users/:id` — Delete (Admin)
 
-### Statistiques
-- `GET /api/stats/overview` — Résumé global (Manager, Admin)
-- `GET /api/stats/invoices` — Data factures (Manager, Admin)
-- `GET /api/stats/agents` — Performance agents (Manager, Admin)
+### Statistics
+- `GET /api/stats/overview` — Global overview (Manager, Admin)
+- `GET /api/stats/invoices` — Invoice data (Manager, Admin)
+- `GET /api/stats/agents` — Agent performance (Manager, Admin)
 
 ## Design Patterns
 
-- **MVC** — Séparation models/controllers/routes
-- **Singleton** — Connexion unique à MongoDB (`config/db.js`)
-- **Chain of Responsibility** — Chaîne de middlewares (auth → validate → controller → error)
-- **Decorator** — `asyncHandler` pour gestion des erreurs async
-- **Factory** — Création d'erreurs HTTP personnalisées (`utils/HttpError.js`)
-- **Strategy** — Traitement par méthode de paiement (cash/check/transfer)
+- **MVC** — Separation of models/controllers/routes
+- **Singleton** — Single connection to MongoDB (`config/db.js`)
+- **Chain of Responsibility** — Middleware chain (auth → validate → controller → error)
+- **Decorator** — `asyncHandler` for async error handling
+- **Factory** — Creation of custom HTTP errors (`utils/HttpError.js`)
+- **Strategy** — Payment method processing (cash/check/transfer)
 
-## Structure du projet
+## Project Structure
 
 ```
 ├── config/
@@ -149,24 +149,24 @@ Le serveur démarre sur `http://localhost:5500`.
 └── package.json
 ```
 
-## Rôles et Permissions
+## Roles and Permissions
 
 | Action | Agent | Manager | Admin |
 |--------|:-----:|:-------:|:-----:|
-| Voir clients/factures | ✅ | ✅ | ✅ |
-| Créer/modifier clients | ✅ | ✅ | ❌ |
-| Supprimer clients | ❌ | ✅ | ✅ |
-| Voir statistiques | ❌ | ✅ | ✅ |
-| Gérer utilisateurs | ❌ | ❌ | ✅ |
+| View clients/invoices | ✅ | ✅ | ✅ |
+| Create/update clients | ✅ | ✅ | ❌ |
+| Delete clients | ❌ | ✅ | ✅ |
+| View statistics | ❌ | ✅ | ✅ |
+| Manage users | ❌ | ❌ | ✅ |
 
-## Authentification
+## Authentication
 
-1. L'utilisateur se registre ou se connecte
-2. JWT généré et stocké en cookie httpOnly
-3. Middleware `authMiddleware` protège les routes protégées
-4. Middleware `authorize()` vérifie le rôle
-5. Controller exécute l'action
-6. Erreurs capturées par `globalErrorHandler`
+1. User registers or logs in
+2. JWT generated and stored in httpOnly cookie
+3. Middleware `authMiddleware` protects protected routes
+4. Middleware `authorize()` verifies the role
+5. Controller executes the action
+6. Errors captured by `globalErrorHandler`
 
 ## Tests
 
@@ -174,43 +174,43 @@ Le serveur démarre sur `http://localhost:5500`.
 npm test
 ```
 
-Les tests couvrent :
-- Authentification (register, login, logout, profil)
-- Gestion des clients (CRUD + validation)
-- Gestion des factures (CRUD + statuts)
-- Paiements avec stratégies
-- Actions de recouvrement (5 types)
-- Gestion des utilisateurs (admin-only)
-- Statistiques (manager-only)
+Tests cover:
+- Authentication (register, login, logout, profile)
+- Client management (CRUD + validation)
+- Invoice management (CRUD + statuses)
+- Payments with strategies
+- Recovery actions (5 types)
+- User management (admin-only)
+- Statistics (manager-only)
 
-> Créer un fichier `.env.test` pour les tests
+> Create a `.env.test` file for tests
 
-## Documentation Swagger
+## Swagger Documentation
 
-Accessible à : `http://localhost:5500/api-docs`
+Accessible at: `http://localhost:5500/api-docs`
 
-Tous les endpoints sont documentés avec exemples et schémas.
+All endpoints are documented with examples and schemas.
 
-## Commandes utiles
+## Useful Commands
 
 ```bash
-# Démarrer le serveur en développement
+# Start the development server
 npm run dev
 
-# Lancer les tests
+# Run the tests
 npm test
 
-# Lancer les tests en mode watch
+# Run tests in watch mode
 npm test -- --watch
 
-# Lancer seulement les tests auth
+# Run only auth tests
 npm test -- auth.test.js
 
-# Build pour production
+# Build for production
 npm run build
 ```
 
-## Équipe
+## Team
 
 - **Adem** — Setup, Models, Auth, Client CRUD, Payment (Strategy), Swagger, README
 - **Baha** — Error Middleware, Invoice, Recovery Actions, User Management, Stats, Tests
