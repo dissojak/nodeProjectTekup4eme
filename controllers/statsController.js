@@ -7,6 +7,7 @@ const User = require('../models/User');
 
 // @desc    Get overview statistics
 // @route   GET /api/stats/overview
+// @access  Private
 const getOverview = asyncHandler(async (req, res) => {
   const totalClients = await Client.countDocuments();
   const totalInvoices = await Invoice.countDocuments();
@@ -44,7 +45,9 @@ const getOverview = asyncHandler(async (req, res) => {
   });
 });
 
-
+// @desc    Get invoice statistics
+// @route   GET /api/stats/invoices
+// @access  Private
 const getInvoiceStats = asyncHandler(async (req, res) => {
   const byStatus = await Invoice.aggregate([
     {
@@ -99,7 +102,9 @@ const getInvoiceStats = asyncHandler(async (req, res) => {
     invoicesPerMonth,
     paymentMethodStats,
   });
-});
+// @desc    Get agent performance statistics
+// @route   GET /api/stats/agents
+// @access  Private});
 
 
 const getAgentStats = asyncHandler(async (req, res) => {
