@@ -1,26 +1,18 @@
 /**
- * StripePaymentGateway - Stripe payment processing implementation
- * Real Stripe integration example (requires 'stripe' npm package)
- * In demo mode: simulates Stripe API responses
+ * Stripe payment gateway - Real API integration with test mode support
+ * Use test API key with card 4242 4242 4242 4242 for development
  */
 
+const Stripe = require('stripe');
 const BasePaymentGateway = require('./BasePaymentGateway');
 
 class StripePaymentGateway extends BasePaymentGateway {
   constructor(apiKey = process.env.STRIPE_API_KEY) {
     super(apiKey);
     this.gatewayName = 'Stripe';
-    // In production: const stripe = require('stripe')(apiKey);
-    // For now, we simulate Stripe responses
-    this.demoMode = !this.isConfigured();
+    this.stripe = this.isConfigured() ? new Stripe(this.apiKey) : null;
   }
 
-  /**
-   * Process payment via Stripe
-   * In production, this would create a Stripe PaymentIntent
-   * @param {Object} paymentData
-   * @returns {Promise<Object>}
-   */
   async processPayment(paymentData) {
     const { amount, currency = 'usd', customerEmail, description, invoiceId } =
       paymentData;
@@ -37,27 +29,34 @@ class StripePaymentGateway extends BasePaymentGateway {
       });
     }
 
-    try {
-      if (this.demoMode) {
-        return this.processDemoPayment(amount, currency, customerEmail, invoiceId);
-      }
+    if (!this.stripe) {
+      return this.formatResponse(false, null, 'Stripe is not configured', {
+        error: 'Missing STRIPE_API_KEY in environment variables',
+      });
+    }
 
-      // Production code (requires 'npm install stripe')
-      // const stripe = require('stripe')(this.apiKey);
-      // const paymentIntent = await stripe.paymentIntents.create({
-      //   amount: Math.round(amount * 100), // Stripe uses cents
-      //   currency,
-      //   receipt_email: customerEmail,
-      //   metadata: { invoiceId },
-      //   description: description || `Invoice Payment`,
-      // });
-      //
-      // return this.formatResponse(
-      //   paymentIntent.status === 'succeeded',
-      //   paymentIntent.id,
-      //   'Payment processed successfully',
-      //   { clientSecret: paymentIntent.client_secret }
-      // );
+    try {
+      // Create payment intent
+      const amountCents = Math.round(amount * 100); // Stripe uses cents
+      const paymentIntent = await this.stripe.paymentIntents.create({
+        amount: amountCents,
+        currency,
+        description,
+        metadata: {
+          invoiceId: invoiceId || 'unknown',
+          customerEmail,
+        },
+        receipt_email: customerEmail,
+      });
+
+      return this.formatResponse(true, paymentIntent.id, 'Payment intent created', {
+        paymentIntentId: paymentIntent.id,
+        amount: paymentIntent.amount / 100,
+        currency: paymentIntent.currency,
+        status: paymentIntent.status,
+        clientSecret: paymentIntent.client_secret,
+        invoiceId,
+      });
     } catch (error) {
       return this.formatResponse(false, null, 'Payment processing failed', {
         error: error.message,
@@ -65,31 +64,6 @@ class StripePaymentGateway extends BasePaymentGateway {
     }
   }
 
-  /**
-   * Demo payment processing (simulates Stripe)
-   * @private
-   */
-  processDemoPayment(amount, currency, customerEmail, invoiceId) {
-    const transactionId = `ch_demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    return Promise.resolve(
-      this.formatResponse(true, transactionId, 'Payment processed successfully (Demo)', {
-        amount,
-        currency,
-        customerEmail,
-        invoiceId,
-        status: 'succeeded',
-        demo: true,
-        note: 'This is a demo transaction. In production, connect to real Stripe API.',
-      })
-    );
-  }
-
-  /**
-   * Verify payment status
-   * @param {string} transactionId
-   * @returns {Promise<Object>}
-   */
   async verifyPayment(transactionId) {
     if (!transactionId) {
       return this.formatResponse(false, null, 'Transaction ID required', {
@@ -97,24 +71,32 @@ class StripePaymentGateway extends BasePaymentGateway {
       });
     }
 
-    try {
-      if (this.demoMode) {
-        return this.formatResponse(true, transactionId, 'Payment verified', {
-          verified: true,
-          status: 'succeeded',
-          demo: true,
-        });
-      }
+    if (!this.stripe) {
+      return this.formatResponse(false, null, 'Stripe is not configured', {
+        error: 'Missing STRIPE_API_KEY in environment variables',
+      });
+    }
 
-      // Production code:
-      // const stripe = require('stripe')(this.apiKey);
-      // const paymentIntent = await stripe.paymentIntents.retrieve(transactionId);
-      // return this.formatResponse(
-      //   paymentIntent.status === 'succeeded',
-      //   transactionId,
-      //   `Payment status: ${paymentIntent.status}`,
-      //   { status: paymentIntent.status }
-      // );
+    try {
+      const paymentIntent = await this.stripe.paymentIntents.retrieve(transactionId);
+
+      const verified = paymentIntent.status === 'succeeded';
+      return this.formatResponse(
+        verified,
+        transactionId,
+        `Payment ${paymentIntent.status}`,
+        {
+          verified,
+          status: paymentIntent.status,
+          amount: paymentIntent.amount / 100,
+          currency: paymentIntent.currency,
+          charges: paymentIntent.charges.data.map(c => ({
+            id: c.id,
+            status: c.status,
+            amount: c.amount / 100,
+          })),
+        }
+      );
     } catch (error) {
       return this.formatResponse(false, transactionId, 'Verification failed', {
         error: error.message,
@@ -123,12 +105,6 @@ class StripePaymentGateway extends BasePaymentGateway {
     }
   }
 
-  /**
-   * Refund a payment
-   * @param {string} transactionId
-   * @param {number} amount - Optional partial refund amount
-   * @returns {Promise<Object>}
-   */
   async refundPayment(transactionId, amount = null) {
     if (!transactionId) {
       return this.formatResponse(false, null, 'Transaction ID required', {
@@ -136,27 +112,40 @@ class StripePaymentGateway extends BasePaymentGateway {
       });
     }
 
+    if (!this.stripe) {
+      return this.formatResponse(false, null, 'Stripe is not configured', {
+        error: 'Missing STRIPE_API_KEY in environment variables',
+      });
+    }
+
     try {
-      if (this.demoMode) {
-        const refundId = `ref_demo_${Date.now()}`;
-        return this.formatResponse(true, refundId, 'Refund processed successfully (Demo)', {
-          originalTransaction: transactionId,
-          amount,
-          refunded: true,
-          demo: true,
+      const paymentIntent = await this.stripe.paymentIntents.retrieve(transactionId);
+
+      if (!paymentIntent.charges.data.length) {
+        return this.formatResponse(false, null, 'No charges found to refund', {
+          refunded: false,
         });
       }
 
-      // Production code:
-      // const stripe = require('stripe')(this.apiKey);
-      // const refund = await stripe.refunds.create({
-      //   charge: transactionId,
-      //   amount: amount ? Math.round(amount * 100) : undefined,
-      // });
-      // return this.formatResponse(true, refund.id, 'Refund successful', {
-      //   originalTransaction: transactionId,
-      //   refundStatus: refund.status,
-      // });
+      const chargeId = paymentIntent.charges.data[0].id;
+      const amountCents = amount ? Math.round(amount * 100) : null;
+
+      const refund = await this.stripe.refunds.create({
+        charge: chargeId,
+        amount: amountCents, // null means full refund
+        reason: 'requested_by_customer',
+        metadata: {
+          originalPaymentIntent: transactionId,
+        },
+      });
+
+      return this.formatResponse(true, refund.id, 'Refund processed successfully', {
+        refundId: refund.id,
+        chargeId,
+        amount: refund.amount / 100,
+        status: refund.status,
+        originalTransaction: transactionId,
+      });
     } catch (error) {
       return this.formatResponse(false, null, 'Refund failed', {
         error: error.message,
@@ -165,38 +154,41 @@ class StripePaymentGateway extends BasePaymentGateway {
     }
   }
 
-  /**
-   * Get transaction details
-   * @param {string} transactionId
-   * @returns {Promise<Object>}
-   */
   async getTransactionDetails(transactionId) {
     if (!transactionId) {
       return this.formatResponse(false, null, 'Transaction ID required');
     }
 
-    try {
-      if (this.demoMode) {
-        return this.formatResponse(
-          true,
-          transactionId,
-          'Transaction details retrieved (Demo)',
-          {
-            status: 'succeeded',
-            amount: 4999,
-            currency: 'usd',
-            created: new Date().toISOString(),
-            demo: true,
-          }
-        );
-      }
+    if (!this.stripe) {
+      return this.formatResponse(false, null, 'Stripe is not configured', {
+        error: 'Missing STRIPE_API_KEY in environment variables',
+      });
+    }
 
-      // Production code:
-      // const stripe = require('stripe')(this.apiKey);
-      // const paymentIntent = await stripe.paymentIntents.retrieve(transactionId);
-      // return this.formatResponse(true, transactionId, 'Transaction details', {
-      //   ...paymentIntent,
-      // });
+    try {
+      const paymentIntent = await this.stripe.paymentIntents.retrieve(transactionId);
+
+      return this.formatResponse(true, transactionId, 'Transaction details retrieved', {
+        paymentIntentId: paymentIntent.id,
+        status: paymentIntent.status,
+        amount: paymentIntent.amount / 100,
+        currency: paymentIntent.currency,
+        created: new Date(paymentIntent.created * 1000).toISOString(),
+        description: paymentIntent.description,
+        charges: paymentIntent.charges.data.map(c => ({
+          id: c.id,
+          status: c.status,
+          amount: c.amount / 100,
+          receipt_url: c.receipt_url,
+        })),
+        refunds: paymentIntent.charges.data[0]
+          ? paymentIntent.charges.data[0].refunds.data.map(r => ({
+              id: r.id,
+              amount: r.amount / 100,
+              status: r.status,
+            }))
+          : [],
+      });
     } catch (error) {
       return this.formatResponse(false, transactionId, 'Failed to retrieve details', {
         error: error.message,
