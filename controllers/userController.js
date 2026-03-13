@@ -2,13 +2,17 @@ const asyncHandler = require('express-async-handler');
 const { validationResult } = require('express-validator');
 const User = require('../models/User');
 
-
+// @desc    Get all users (admin only)
+// @route   GET /api/users
+// @access  Private
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select('-password');
   res.json(users);
 });
 
-
+// @desc    Get user by ID
+// @route   GET /api/users/:id
+// @access  Private
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select('-password');
 
@@ -20,7 +24,9 @@ const getUserById = asyncHandler(async (req, res) => {
   res.json(user);
 });
 
-
+// @desc    Update user (admin only)
+// @route   PUT /api/users/:id
+// @access  Private
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
@@ -45,7 +51,9 @@ const updateUser = asyncHandler(async (req, res) => {
   });
 });
 
-
+// @desc    Delete user (admin only)
+// @route   DELETE /api/users/:id
+// @access  Private
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
