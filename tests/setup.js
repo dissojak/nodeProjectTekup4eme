@@ -46,7 +46,7 @@ afterAll(async () => {
       console.log('✓ MongoDB cleaned up and closed');
     }
   } catch (err) {
-    console.error('⚠️  MongoDB cleanup error:', err.message);
+    console.error('MongoDB cleanup error:', err.message);
   }
 }, 90000);
 

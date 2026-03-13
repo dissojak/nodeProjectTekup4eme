@@ -52,8 +52,6 @@ const { createPaymentValidator } = require('../validators/paymentValidator');
  *               paymentDate:
  *                 type: string
  *                 format: date-time
- *               note:
- *                 type: string
  *     responses:
  *       201:
  *         description: Payment recorded, invoice status updated
