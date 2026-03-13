@@ -102,9 +102,24 @@ const { registerValidator, loginValidator } = require('../validators/authValidat
  *               $ref: '#/components/schemas/User'
  */
 
+// @desc    Register a new user
+// @route   POST /api/auth/register
+// @access  Public
 router.post('/register', registerValidator, register);
+
+// @desc    Login user
+// @route   POST /api/auth/login
+// @access  Public
 router.post('/login', loginValidator, login);
+
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Private
 router.post('/logout', protect, logout);
+
+// @desc    Get current user profile
+// @route   GET /api/auth/me
+// @access  Private
 router.get('/me', protect, getMe);
 
 module.exports = router;
