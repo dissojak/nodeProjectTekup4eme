@@ -14,8 +14,8 @@ const createPaymentValidator = [
   check('paymentMethod')
     .notEmpty()
     .withMessage('Payment method is required')
-    .isIn(['cash', 'check', 'transfer'])
-    .withMessage('Payment method must be: cash, check, or transfer'),
+    .isIn(['cash', 'check', 'transfer', 'stripe', 'paypal'])
+    .withMessage('Payment method must be: cash, check, transfer, stripe, or paypal'),
   check('paymentDate')
     .optional()
     .isISO8601()

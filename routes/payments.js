@@ -46,6 +46,9 @@ const { createPaymentValidator } = require('../validators/paymentValidator');
  *               paymentMethod:
  *                 type: string
  *                 enum: [cash, check, transfer]
+ *               note:
+ *                 type: string
+ *                 description: Optional note about the payment
  *               paymentDate:
  *                 type: string
  *                 format: date-time
