@@ -3,7 +3,9 @@ const { validationResult } = require('express-validator');
 const Invoice = require('../models/Invoice');
 const Client = require('../models/Client');
 
-
+// @desc    Get all invoices
+// @route   GET /api/invoices
+// @access  Private
 const getInvoices = asyncHandler(async (req, res) => {
   const invoices = await Invoice.find()
     .populate('client', 'name email phone')
@@ -12,7 +14,9 @@ const getInvoices = asyncHandler(async (req, res) => {
   res.json(invoices);
 });
 
-
+// @desc    Get invoice by ID
+// @route   GET /api/invoices/:id
+// @access  Private
 const getInvoiceById = asyncHandler(async (req, res) => {
   const invoice = await Invoice.findById(req.params.id)
     .populate('client', 'name email phone')
@@ -26,6 +30,9 @@ const getInvoiceById = asyncHandler(async (req, res) => {
   res.json(invoice);
 });
 
+// @desc    Get invoices by client
+// @route   GET /api/invoices/client/:clientId
+// @access  Private
 const getInvoicesByClient = asyncHandler(async (req, res) => {
   const client = await Client.findById(req.params.clientId);
 
@@ -41,7 +48,9 @@ const getInvoicesByClient = asyncHandler(async (req, res) => {
   res.json(invoices);
 });
 
-
+// @desc    Create a new invoice
+// @route   POST /api/invoices
+// @access  Private
 const createInvoice = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -73,7 +82,9 @@ const createInvoice = asyncHandler(async (req, res) => {
   res.status(201).json(invoice);
 });
 
-
+// @desc    Update an invoice
+// @route   PUT /api/invoices/:id
+// @access  Private
 const updateInvoice = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -100,7 +111,9 @@ const updateInvoice = asyncHandler(async (req, res) => {
   res.json(updatedInvoice);
 });
 
-
+// @desc    Delete an invoice
+// @route   DELETE /api/invoices/:id
+// @access  Private
 const deleteInvoice = asyncHandler(async (req, res) => {
   const invoice = await Invoice.findById(req.params.id);
 

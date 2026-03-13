@@ -135,31 +135,13 @@ const { createInvoiceValidator, updateInvoiceValidator } = require('../validator
 
 router.use(protect); 
 
-// @desc    Get all invoices
-// @route   GET /api/invoices
-// @access  Private
-// @desc    Create a new invoice
-// @route   POST /api/invoices
-// @access  Private
 router
   .route('/')
   .get(getInvoices)
   .post(authorize('agent', 'manager'), createInvoiceValidator, createInvoice);
 
-// @desc    Get invoices by client
-// @route   GET /api/invoices/client/:clientId
-// @access  Private
 router.get('/client/:clientId', getInvoicesByClient);
 
-// @desc    Get invoice by ID
-// @route   GET /api/invoices/:id
-// @access  Private
-// @desc    Update an invoice
-// @route   PUT /api/invoices/:id
-// @access  Private
-// @desc    Delete an invoice
-// @route   DELETE /api/invoices/:id
-// @access  Private
 router
   .route('/:id')
   .get(getInvoiceById)

@@ -122,26 +122,11 @@ const { createClientValidator, updateClientValidator } = require('../validators/
 
 router.use(protect); // All client routes require authentication
 
-// @desc    Get all clients
-// @route   GET /api/clients
-// @access  Private
-// @desc    Create a new client
-// @route   POST /api/clients
-// @access  Private
 router
   .route('/')
   .get(getClients)
   .post(authorize('agent', 'manager'), createClientValidator, createClient);
 
-// @desc    Get client by ID
-// @route   GET /api/clients/:id
-// @access  Private
-// @desc    Update a client
-// @route   PUT /api/clients/:id
-// @access  Private
-// @desc    Delete a client
-// @route   DELETE /api/clients/:id
-// @access  Private
 router
   .route('/:id')
   .get(getClientById)
