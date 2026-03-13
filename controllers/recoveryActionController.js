@@ -4,7 +4,9 @@ const RecoveryAction = require('../models/RecoveryAction');
 const Invoice = require('../models/Invoice');
 const Client = require('../models/Client');
 
-
+// @desc    Get all recovery actions
+// @route   GET /api/recovery-actions
+// @access  Private
 const getRecoveryActions = asyncHandler(async (req, res) => {
   const actions = await RecoveryAction.find()
     .populate('invoice', 'invoiceNumber amount status')
@@ -14,7 +16,9 @@ const getRecoveryActions = asyncHandler(async (req, res) => {
   res.json(actions);
 });
 
-
+// @desc    Get recovery actions by client
+// @route   GET /api/recovery-actions/client/:clientId
+// @access  Private
 const getRecoveryActionsByClient = asyncHandler(async (req, res) => {
   const client = await Client.findById(req.params.clientId);
 
@@ -31,7 +35,9 @@ const getRecoveryActionsByClient = asyncHandler(async (req, res) => {
   res.json(actions);
 });
 
-
+// @desc    Get recovery actions by invoice
+// @route   GET /api/recovery-actions/invoice/:invoiceId
+// @access  Private
 const getRecoveryActionsByInvoice = asyncHandler(async (req, res) => {
   const invoice = await Invoice.findById(req.params.invoiceId);
 
@@ -48,7 +54,9 @@ const getRecoveryActionsByInvoice = asyncHandler(async (req, res) => {
   res.json(actions);
 });
 
-
+// @desc    Create a new recovery action
+// @route   POST /api/recovery-actions
+// @access  Private
 const createRecoveryAction = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -84,7 +92,9 @@ const createRecoveryAction = asyncHandler(async (req, res) => {
   res.status(201).json(action);
 });
 
-
+// @desc    Update a recovery action
+// @route   PUT /api/recovery-actions/:id
+// @access  Private
 const updateRecoveryAction = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -110,7 +120,9 @@ const updateRecoveryAction = asyncHandler(async (req, res) => {
   res.json(updatedAction);
 });
 
-
+// @desc    Delete a recovery action
+// @route   DELETE /api/recovery-actions/:id
+// @access  Private
 const deleteRecoveryAction = asyncHandler(async (req, res) => {
   const action = await RecoveryAction.findById(req.params.id);
 
