@@ -4,7 +4,7 @@ const Client = require('../models/Client');
 
 // @desc    Get all clients
 // @route   GET /api/clients
-// @access  Private (all roles)
+// @access  Private
 const getClients = asyncHandler(async (req, res) => {
   const clients = await Client.find().populate('createdBy', 'name email');
   res.json(clients);
@@ -12,7 +12,7 @@ const getClients = asyncHandler(async (req, res) => {
 
 // @desc    Get single client by ID
 // @route   GET /api/clients/:id
-// @access  Private (all roles)
+// @access  Private
 const getClientById = asyncHandler(async (req, res) => {
   const client = await Client.findById(req.params.id).populate('createdBy', 'name email');
 
@@ -26,7 +26,7 @@ const getClientById = asyncHandler(async (req, res) => {
 
 // @desc    Create a new client
 // @route   POST /api/clients
-// @access  Private (agent, manager)
+// @access  Private
 const createClient = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -49,7 +49,7 @@ const createClient = asyncHandler(async (req, res) => {
 
 // @desc    Update a client
 // @route   PUT /api/clients/:id
-// @access  Private (agent, manager)
+// @access  Private
 const updateClient = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -77,7 +77,7 @@ const updateClient = asyncHandler(async (req, res) => {
 
 // @desc    Delete a client
 // @route   DELETE /api/clients/:id
-// @access  Private (manager, admin)
+// @access  Private
 const deleteClient = asyncHandler(async (req, res) => {
   const client = await Client.findById(req.params.id);
 
