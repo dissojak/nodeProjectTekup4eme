@@ -74,7 +74,7 @@ const options = {
             recordedBy: { type: 'string' },
             gatewayName: { type: 'string', enum: ['stripe', 'paypal', null], example: 'stripe' },
             transactionId: { type: 'string', example: 'pi_1234567890' },
-            transactionStatus: { type: 'string', enum: ['pending', 'succeeded', 'failed', 'captured', 'refunded'] },
+            transactionStatus: { type: 'string', enum: ['pending', 'requires_payment_method', 'requires_confirmation', 'requires_action', 'processing', 'requires_capture', 'succeeded', 'failed', 'captured', 'refunded', 'canceled'] },
             customerEmail: { type: 'string', example: 'customer@example.com' },
             refundable: { type: 'boolean', example: true },
             createdAt: { type: 'string', format: 'date-time' },

@@ -62,7 +62,7 @@ const paymentSchema = new mongoose.Schema(
     // Status of the transaction in the gateway
     transactionStatus: {
       type: String,
-      enum: ['pending', 'succeeded', 'failed', 'captured', 'refunded'],
+      enum: ['pending', 'requires_payment_method', 'requires_confirmation', 'requires_action', 'processing', 'requires_capture', 'succeeded', 'failed', 'captured', 'refunded', 'canceled'],
       default: 'pending',
     },
 
